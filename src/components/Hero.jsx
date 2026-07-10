@@ -130,23 +130,23 @@ export default function Hero() {
     <section id="home" style={styles.heroSection}>
       <canvas ref={canvasRef} style={styles.particleCanvas} />
       
-      <div className="container" style={styles.heroContainer}>
+      <div className="container hero-grid">
         {/* Left column: Text Content */}
-        <div style={styles.leftCol}>
+        <div className="hero-left">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span style={styles.welcomeTag} className="glass">
+            <span style={styles.welcomeTag} className="glass hero-intro">
               ✨ Welcome to my digital space
             </span>
-            <h1 style={styles.headline}>
+            <h1 style={styles.headline} className="hero-headline">
               Hi, I'm <br />
               <span className="text-gradient">Abhishekh Kumar Tiwari</span>
             </h1>
             
-            <div style={styles.typingContainer}>
+            <div style={styles.typingContainer} className="hero-typing">
               <span style={styles.typingLabel}>I am a </span>
               <span style={styles.typingText}>
                 {currentText}
@@ -158,7 +158,7 @@ export default function Hero() {
               I enjoy transforming ideas into software, embedded systems, and intelligent applications while documenting everything I learn.
             </p>
 
-            <div style={styles.btnGroup}>
+            <div style={styles.btnGroup} className="hero-btns">
               <button 
                 onClick={() => handleScrollTo('journey')} 
                 className="btn btn-primary interactive"
@@ -190,14 +190,15 @@ export default function Hero() {
         </div>
 
         {/* Right column: 3D Glowing Orb Visual */}
-        <div style={styles.rightCol}>
+        <div className="hero-right">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
+            className="hero-orb-wrapper"
             style={styles.orbWrapper}
           >
-            <div style={styles.orbOuterRing} className="interactive">
+            <div className="hero-orb-outer interactive" style={styles.orbOuterRing}>
               <div style={styles.orbInnerRing}>
                 <img 
                   src={abhishekhMotorcycle} 
@@ -370,8 +371,8 @@ const styles = {
   },
 };
 
-// Add raw CSS for animations (typing cursor blink, spinning orb, pulse orb, arrow bounce)
-const rawStyles = `
+// Keyframe animations — injected once cleanly (no responsive overrides; those are in index.css)
+const heroKeyframes = `
 @keyframes pulseOuter {
   0% { transform: scale(0.98); box-shadow: 0 0 25px rgba(99, 102, 241, 0.15); }
   100% { transform: scale(1.03); box-shadow: 0 0 45px rgba(99, 102, 241, 0.35); }
@@ -379,10 +380,6 @@ const rawStyles = `
 @keyframes blink {
   from, to { opacity: 0 }
   50% { opacity: 1 }
-}
-@keyframes spinOrb {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 @keyframes pulseOrb {
   0% { transform: scale(0.9); opacity: 0.7; filter: blur(12px); }
@@ -393,53 +390,11 @@ const rawStyles = `
   40% { transform: translateY(-6px); }
   60% { transform: translateY(-3px); }
 }
-@media (max-width: 992px) {
-  #home .container {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 2rem;
-  }
-  #home .container div:first-child {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  #home p {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #home div[style*="btnGroup"] {
-    justify-content: center;
-  }
-  #home div[style*="rightCol"] {
-    order: -1;
-  }
-  #home div[style*="orbWrapper"] {
-    width: 200px;
-    height: 200px;
-  }
-  #home div[style*="orbOuterRing"] {
-    width: 200px;
-    height: 200px;
-  }
-  #home div[style*="orbGlow"] {
-    width: 90px;
-    height: 90px;
-  }
-}
-@media (max-width: 480px) {
-  #home h1 {
-    font-size: 2.5rem !important;
-  }
-  #home div[style*="typingContainer"] {
-    font-size: 1.15rem !important;
-  }
-}
 `;
 
-if (typeof document !== 'undefined') {
+if (typeof document !== 'undefined' && !document.getElementById('hero-keyframes')) {
   const styleSheet = document.createElement('style');
-  styleSheet.type = 'text/css';
-  styleSheet.innerText = rawStyles;
+  styleSheet.id = 'hero-keyframes';
+  styleSheet.textContent = heroKeyframes;
   document.head.appendChild(styleSheet);
 }
