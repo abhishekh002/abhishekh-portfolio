@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/abhishekh-portfolio/',
   plugins: [react()],
+  base: '/abhishekh-portfolio/',
   server: {
     allowedHosts: true
   }
