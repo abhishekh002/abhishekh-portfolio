@@ -33,13 +33,19 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Sync build output to docs
+        run: |
+          rm -rf docs
+          mkdir -p docs
+          cp -R dist/. docs/
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dist"
+          path: "./docs"
 
   deploy:
     environment:
